@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator Portal — Digital Notice Board</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span class="logo-icon">📋</span>
+            <div>
+                <h1>Digital Notice Board</h1>
+                <span>Official Communication System</span>
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">🌙</button>
+            </div>
+            <span class="user-name" id="userName"></span>
+            <span class="role-badge">Administrator</span>
+            <button class="logout-btn" onclick="logout()">Sign Out</button>
+        </div>
+    </nav>
+
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Main</div>
+                <a href="index.html"><span class="nav-icon">🏠</span> Dashboard</a>
+                <a href="admin.html" class="active"><span class="nav-icon">📋</span> Notice Board</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Portal</div>
+                <a href="#" onclick="adminSwitchTab('notices'); return false;" id="snav-notices" class="snav active-snav"><span class="nav-icon">📌</span> Notices</a>
+                <a href="#" onclick="adminSwitchTab('statistics'); return false;" id="snav-statistics" class="snav"><span class="nav-icon">📊</span> Statistics</a>
+                <a href="#" onclick="adminSwitchTab('schedules'); return false;" id="snav-schedules" class="snav"><span class="nav-icon">🗓️</span> Schedules</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Account</div>
+                <a href="index.html#settings"><span class="nav-icon">⚙️</span> Settings</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <!-- Tab Bar -->
+            <div class="tab-bar">
+                <button class="tab-btn active" data-tab="notices"     onclick="adminSwitchTab('notices')">Notices</button>
+                <button class="tab-btn"         data-tab="statistics" onclick="adminSwitchTab('statistics')">Statistics</button>
+                <button class="tab-btn"         data-tab="schedules"  onclick="adminSwitchTab('schedules')">Schedules</button>
+            </div>
+
+            <!-- ── NOTICES TAB ── -->
+            <div class="tab-content active" id="atab-notices">
+
+                <div class="page-header">
+                    <h2>Administrator Portal</h2>
+                    <p>Post and manage official notices</p>
+                </div>
+
+                <div class="portal-layout">
+                    <div>
+                        <div class="form-panel">
+                            <h3>Issue New Notice</h3>
+                            <form id="noticeForm">
+                                <div class="form-grid">
+                                    <div class="form-group full-width">
+                                        <label for="title">Notice Title</label>
+                                        <input type="text" id="title" placeholder="Enter the notice title" required>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="content">Notice Content</label>
+                                        <textarea id="content" placeholder="Enter the full notice content" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="priority">Priority Level</label>
+                                        <select id="priority" required>
+                                            <option value="high">High — Urgent</option>
+                                            <option value="medium" selected>Medium — Standard</option>
+                                            <option value="low">Low — Informational</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="audience">Target Audience</label>
+                                        <select id="audience" required>
+                                            <option value="all">All Departments</option>
+                                            <option value="cs">Computer Science</option>
+                                            <option value="it">Information Technology</option>
+                                            <option value="mech">Mechanical Engineering</option>
+                                            <option value="admin">Administration</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expiry">Expiry Date & Time</label>
+                                        <input type="datetime-local" id="expiry" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="publishDate">Publish Date (Optional)</label>
+                                        <input type="datetime-local" id="publishDate" title="Leave blank to publish immediately">
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="attachment">Attachment Link (Optional)</label>
+                                        <input type="url" id="attachment" placeholder="https://example.com/document.pdf">
+                                    </div>
+                                </div>
+                                <input type="hidden" id="editNoticeId" value="">
+                                <p id="formError" style="color:#c0392b;font-size:0.85rem;margin:6px 0 0;display:none;"></p>
+                                <div style="display: flex; gap: 10px; margin-top: 18px;">
+                                    <button type="submit" id="btnSubmitNotice" class="btn-submit" style="margin-top:0;">Publish Notice</button>
+                                    <button type="button" id="btnSaveDraft" class="btn-submit" style="background:#888;margin-top:0;" onclick="noticeBoard.saveDraft(event)">Save Draft</button>
+                                    <button type="button" id="btnCancelEdit" class="btn-submit admin-only" style="background:#c0392b;margin-top:0;display:none;" onclick="noticeBoard.cancelEdit()">Cancel Edit</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="notices-panel">
+                            <h3>Active Notices <span class="notice-count" id="noticeCount">0 Active</span></h3>
+                            <div id="noticeBoard"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="calendar-widget">
+                            <h3>Calendar</h3>
+                            <div class="cal-header">
+                                <button class="cal-nav" onclick="calendar.prev()">&#8249;</button>
+                                <span id="calMonthYear"></span>
+                                <button class="cal-nav" onclick="calendar.next()">&#8250;</button>
+                            </div>
+                            <div class="cal-grid" id="calGrid"></div>
+                            <div class="cal-legend">
+                                <div class="cal-legend-dot"></div>
+                                <span>Notice expiry date</span>
+                            </div>
+                        </div>
+
+                        <div class="users-widget">
+                            <h3>Registered Users <span id="userCount">0</span></h3>
+                            <div id="usersList"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── STATISTICS TAB ── -->
+            <div class="tab-content" id="atab-statistics">
+
+                <div class="page-header">
+                    <h2>Statistics</h2>
+                    <p>Detailed analytics of the notice board system</p>
+                </div>
+
+                <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); margin-bottom:24px;">
+                    <div class="stat-card gold">
+                        <div class="stat-value" id="st-total">0</div>
+                        <div class="stat-label">Total Notices</div>
+                    </div>
+                    <div class="stat-card red">
+                        <div class="stat-value" id="st-high">0</div>
+                        <div class="stat-label">High Priority</div>
+                    </div>
+                    <div class="stat-card navy">
+                        <div class="stat-value" id="st-medium">0</div>
+                        <div class="stat-label">Medium Priority</div>
+                    </div>
+                    <div class="stat-card blue">
+                        <div class="stat-value" id="st-low">0</div>
+                        <div class="stat-label">Low Priority</div>
+                    </div>
+                    <div class="stat-card" style="border-top-color:#27ae60;">
+                        <div class="stat-value" id="st-users">0</div>
+                        <div class="stat-label">Registered Users</div>
+                    </div>
+                    <div class="stat-card" style="border-top-color:#8e44ad;">
+                        <div class="stat-value" id="st-expiring">0</div>
+                        <div class="stat-label">Expiring in 24h</div>
+                    </div>
+                </div>
+
+                <div class="donut-grid">
+                    <div class="panel donut-panel">
+                        <h3>Priority Distribution</h3>
+                        <div class="donut-wrap">
+                            <svg class="donut-svg" viewBox="0 0 200 200" id="svg-priority"></svg>
+                            <div class="donut-center" id="dc-priority"></div>
+                        </div>
+                        <div class="donut-legend" id="lg-priority"></div>
+                    </div>
+                    <div class="panel donut-panel">
+                        <h3>Notice Status</h3>
+                        <div class="donut-wrap">
+                            <svg class="donut-svg" viewBox="0 0 200 200" id="svg-status"></svg>
+                            <div class="donut-center" id="dc-status"></div>
+                        </div>
+                        <div class="donut-legend" id="lg-status"></div>
+                    </div>
+                    <div class="panel donut-panel">
+                        <h3>User Roles</h3>
+                        <div class="donut-wrap">
+                            <svg class="donut-svg" viewBox="0 0 200 200" id="svg-roles"></svg>
+                            <div class="donut-center" id="dc-roles"></div>
+                        </div>
+                        <div class="donut-legend" id="lg-roles"></div>
+                    </div>
+                    <div class="panel donut-panel">
+                        <h3>Notices by Author</h3>
+                        <div class="donut-wrap">
+                            <svg class="donut-svg" viewBox="0 0 200 200" id="svg-author"></svg>
+                            <div class="donut-center" id="dc-author"></div>
+                        </div>
+                        <div class="donut-legend" id="lg-author"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ── SCHEDULES TAB ── -->
+            <div class="tab-content" id="atab-schedules">
+
+                <div class="page-header">
+                    <h2>Schedules</h2>
+                    <p>Upcoming notice expirations and timeline</p>
+                </div>
+
+                <div class="dashboard-grid" style="grid-template-columns: 2fr 1fr;">
+                    <div class="panel">
+                        <h3>Expiry Timeline</h3>
+                        <div id="sch-timeline"></div>
+                    </div>
+                    <div>
+                        <div class="panel" style="margin-bottom:20px;">
+                            <h3>Expiring Soon</h3>
+                            <div id="sch-expiring-soon"></div>
+                        </div>
+                        <div class="panel">
+                            <h3>Schedule Summary</h3>
+                            <div id="sch-summary"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="portal.js"></script>
+</body>
+</html>

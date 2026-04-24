@@ -1,0 +1,241 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #1a2340;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.auth-branding {
+    flex: 1;
+    background: linear-gradient(160deg, #1a2340 0%, #243060 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.auth-branding .logo {
+    width: 80px;
+    height: 80px;
+    background: #c9a84c;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.auth-branding h1 {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: normal;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.auth-branding p {
+    color: #c9a84c;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.auth-branding .tagline {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.95rem;
+    text-align: center;
+    line-height: 1.8;
+    max-width: 300px;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.auth-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f4f0;
+    padding: 40px;
+}
+
+.auth-box {
+    background: white;
+    padding: 50px;
+    width: 100%;
+    max-width: 420px;
+    border-top: 4px solid #c9a84c;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+}
+
+.auth-box h2 {
+    color: #1a2340;
+    font-size: 1.6rem;
+    font-weight: normal;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.auth-box .subtitle {
+    color: #888;
+    font-size: 0.85rem;
+    margin-bottom: 35px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    font-size: 0.95rem;
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+    background: #fafafa;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #1a2340;
+    background: white;
+}
+
+.btn-primary {
+    width: 100%;
+    background: #1a2340;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 0.85rem;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background: #c9a84c;
+}
+
+.switch-auth {
+    text-align: center;
+    margin-top: 25px;
+    color: #888;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.85rem;
+}
+
+.switch-auth a {
+    color: #1a2340;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid #c9a84c;
+}
+
+.switch-auth a:hover {
+    color: #c9a84c;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 12px 15px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.85rem;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.message.error {
+    background: #fff5f5;
+    color: #c0392b;
+    border-left: 3px solid #c0392b;
+}
+
+.message.success {
+    background: #f5fff5;
+    color: #27ae60;
+    border-left: 3px solid #27ae60;
+}
+
+@media (max-width: 768px) {
+    .auth-branding { display: none; }
+    .auth-container { padding: 20px; }
+    .auth-box { padding: 35px 25px; }
+}
+
+/* ── Forgot Password ── */
+.password-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.password-label-row label { margin-bottom: 0; }
+
+.forgot-link {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.75rem;
+    color: #888;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+}
+
+.forgot-link:hover { color: #c9a84c; }
+
+.back-link {
+    display: inline-block;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.78rem;
+    color: #888;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    margin-bottom: 22px;
+    transition: color 0.2s;
+}
+
+.back-link:hover { color: #1a2340; }

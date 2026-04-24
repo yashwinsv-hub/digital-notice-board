@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Digital Notice Board</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-branding">
+            <div class="logo">📋</div>
+            <h1>Digital Notice Board</h1>
+            <p>Official Communication System</p>
+            <span class="tagline">
+                A secure and centralized platform for official notices, announcements, and organizational communications.
+            </span>
+        </div>
+
+        <div class="auth-container">
+            <div class="auth-box">
+
+                <!-- Login Panel -->
+                <div id="panel-login">
+                    <h2>Welcome Back</h2>
+                    <p class="subtitle">Sign in to your account</p>
+
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="password-label-row">
+                                <label for="password">Password</label>
+                                <a href="#" class="forgot-link" onclick="showForgot(); return false;">Forgot Password?</a>
+                            </div>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Sign In</button>
+                    </form>
+
+                    <p class="switch-auth">
+                        New to the system? <a href="signup.html">Create Account</a>
+                    </p>
+
+                    <div id="message" class="message" style="display:none;"></div>
+                </div>
+
+                <!-- Forgot Password Panel -->
+                <div id="panel-forgot" style="display:none;">
+                    <a href="#" class="back-link" onclick="showLogin(); return false;">&#8592; Back to Sign In</a>
+                    <h2>Reset Password</h2>
+                    <p class="subtitle">Enter your registered email</p>
+
+                    <form id="forgotForm">
+                        <div class="form-group">
+                            <label for="resetEmail">Email Address</label>
+                            <input type="email" id="resetEmail" placeholder="Enter your registered email" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Find Account</button>
+                    </form>
+
+                    <div id="forgot-message" class="message" style="display:none;"></div>
+                </div>
+
+                <!-- New Password Panel -->
+                <div id="panel-newpass" style="display:none;">
+                    <a href="#" class="back-link" onclick="showLogin(); return false;">&#8592; Back to Sign In</a>
+                    <h2>New Password</h2>
+                    <p class="subtitle">Set a new password for your account</p>
+
+                    <form id="newpassForm">
+                        <div class="form-group">
+                            <label>Account</label>
+                            <input type="text" id="resetUserDisplay" readonly style="background:#f0f0f0; color:#888;">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPass">New Password</label>
+                            <input type="password" id="newPass" placeholder="Minimum 6 characters" minlength="6" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPass">Confirm Password</label>
+                            <input type="password" id="confirmPass" placeholder="Repeat new password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Update Password</button>
+                    </form>
+
+                    <div id="newpass-message" class="message" style="display:none;"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

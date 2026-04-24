@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Portal — Digital Notice Board</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <span class="logo-icon">📋</span>
+            <div>
+                <h1>Digital Notice Board</h1>
+                <span>Official Communication System</span>
+            </div>
+        </div>
+        <div class="navbar-right">
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">🌙</button>
+            </div>
+            <span class="user-name" id="userName"></span>
+            <span class="role-badge user-role">User</span>
+            <button class="logout-btn" onclick="logout()">Sign Out</button>
+        </div>
+    </nav>
+
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Main</div>
+                <a href="index.html"><span class="nav-icon">🏠</span> Dashboard</a>
+                <a href="user.html" class="active"><span class="nav-icon">📋</span> Notice Board</a>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Account</div>
+                <a href="index.html#settings"><span class="nav-icon">⚙️</span> Settings</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <div class="page-header">
+                <h2>Notice Board</h2>
+                <p>Official notices and announcements — read only</p>
+            </div>
+
+            <div class="portal-layout">
+
+                <!-- Left: Notices -->
+                <div>
+                    <div class="notices-panel">
+                        <h3>
+                            Active Notices
+                            <span class="notice-count" id="noticeCount">0 Active</span>
+                        </h3>
+                        <div class="controls-bar">
+                            <input type="text" id="searchInput" class="search-input" placeholder="Search notices..." oninput="noticeBoard.renderNotices()">
+                            <select id="filterCategory" class="filter-select" onchange="noticeBoard.renderNotices()">
+                                <option value="all">All Departments</option>
+                                <option value="cs">Computer Science</option>
+                                <option value="it">Information Technology</option>
+                                <option value="mech">Mechanical</option>
+                                <option value="admin">Administration</option>
+                            </select>
+                            <select id="filterPriority" class="filter-select" onchange="noticeBoard.renderNotices()">
+                                <option value="all">All Priorities</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                        <div id="noticeBoard"></div>
+                    </div>
+                </div>
+
+                <!-- Right: Calendar -->
+                <div>
+                    <div class="calendar-widget">
+                        <h3>Calendar</h3>
+                        <div class="cal-header">
+                            <button class="cal-nav" onclick="calendar.prev()">&#8249;</button>
+                            <span id="calMonthYear"></span>
+                            <button class="cal-nav" onclick="calendar.next()">&#8250;</button>
+                        </div>
+                        <div class="cal-grid" id="calGrid"></div>
+                        <div class="cal-legend">
+                            <div class="cal-legend-dot"></div>
+                            <span>Notice expiry date</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script src="portal.js"></script>
+</body>
+</html>

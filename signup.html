@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — Digital Notice Board</title>
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-branding">
+            <div class="logo">📋</div>
+            <h1>Digital Notice Board</h1>
+            <p>Official Communication System</p>
+            <span class="tagline">
+                A secure and centralized platform for official notices, announcements, and organizational communications.
+            </span>
+        </div>
+
+        <div class="auth-container">
+            <div class="auth-box">
+                <h2>Create Account</h2>
+                <p class="subtitle">Register to access the system</p>
+
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Minimum 6 characters" minlength="6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select id="department" required>
+                            <option value="">— Select Department —</option>
+                            <option value="general">General / All</option>
+                            <option value="cs">Computer Science</option>
+                            <option value="it">Information Technology</option>
+                            <option value="mech">Mechanical Engineering</option>
+                            <option value="admin">Administration</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Access Role</label>
+                        <select id="role" required>
+                            <option value="">— Select Role —</option>
+                            <option value="user">User — Read Only Access</option>
+                            <option value="admin">Administrator — Full Access</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary">Register Account</button>
+                </form>
+
+                <p class="switch-auth">
+                    Already registered? <a href="login.html">Sign In</a>
+                </p>
+
+                <div id="message" class="message" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>
