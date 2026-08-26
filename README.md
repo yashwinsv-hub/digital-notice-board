@@ -4,10 +4,6 @@ A full-stack web-based Digital Notice Board designed to replace traditional pape
 
 The system provides separate Admin and User roles, allowing administrators to create and manage notices while users can view active announcements.
 
-## 🚀 Live Demo
-
-[Visit Digital Notice Board](https://digital-notice-board-eerb.onrender.com)
-
 ## 📂 GitHub Repository
 
 [View Source Code](https://github.com/yashwinsv-hub/digital-notice-board)
