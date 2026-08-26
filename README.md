@@ -73,6 +73,7 @@ For detailed setup instructions, see `SETUP-EMAIL.md`
 - **Version Control:** Git & GitHub
 ## Project Structure
 
+```text
 digital-notice-board/
 ├── admin.html          # Admin dashboard
 ├── user.html           # User notice board
