@@ -1,3 +1,31 @@
+// ── Theme Manager ────────────────────────────────────────
+class ThemeManager {
+    constructor() {
+        this.theme = localStorage.getItem('theme') || 'light';
+        this.btn = document.getElementById('themeToggle');
+        if (this.btn) this.btn.addEventListener('click', () => this.toggle());
+        this.applyTheme();
+        
+        // Cross-tab sync for theme
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'theme') {
+                this.theme = e.newValue || 'light';
+                this.applyTheme();
+            }
+        });
+    }
+    applyTheme() {
+        if (this.theme === 'dark') document.body.classList.add('dark-mode');
+        else document.body.classList.remove('dark-mode');
+    }
+    toggle() {
+        this.theme = this.theme === 'light' ? 'dark' : 'light';
+        localStorage.setItem('theme', this.theme);
+        this.applyTheme();
+    }
+}
+const themeManager = new ThemeManager();
+
 // ── Auth ─────────────────────────────────────────────────────────
 const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 if (!currentUser) window.location.href = 'login.html';
@@ -32,7 +60,22 @@ document.getElementById('dashboardSubtitle').textContent = isAdmin ? 'System ove
 function getNotices()  { return JSON.parse(localStorage.getItem('notices') || '[]'); }
 function getUsers()    { return JSON.parse(localStorage.getItem('users')   || '[]'); }
 function isExpired(n)  { return new Date(n.expiry) < new Date(); }
-function getActive()   { return getNotices().filter(n => !isExpired(n)); }
+function getActive()   {
+    return getNotices().filter(n => {
+        if (isExpired(n)) return false;
+        if (isAdmin) return true;
+        if (n.status === 'draft') return false;
+        if (n.publishDate && new Date(n.publishDate) > new Date()) return false;
+        
+        if (n.target && n.target !== 'all' && currentUser.department) {
+            if (currentUser.department !== 'general' && currentUser.department !== n.target) return false;
+        }
+        if (n.targetYear && n.targetYear !== 'all' && currentUser.year) {
+            if (currentUser.year !== 'na' && currentUser.year !== n.targetYear) return false;
+        }
+        return true;
+    });
+}
 
 function pct(val, total) { return total > 0 ? Math.round((val / total) * 100) : 0; }
 

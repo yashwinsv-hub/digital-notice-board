@@ -5,6 +5,14 @@ class ThemeManager {
         this.btn = document.getElementById('themeToggle');
         if (this.btn) this.btn.addEventListener('click', () => this.toggle());
         this.applyTheme();
+        
+        // Cross-tab sync for theme
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'theme') {
+                this.theme = e.newValue || 'light';
+                this.applyTheme();
+            }
+        });
     }
     applyTheme() {
         if (this.theme === 'dark') document.body.classList.add('dark-mode');
@@ -43,23 +51,30 @@ class Calendar {
         this.today  = new Date();
         this.cursor = new Date(this.today.getFullYear(), this.today.getMonth(), 1);
         this.render();
+
+        // Close modal on escape
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') this.closeModal();
+        });
     }
 
     prev() { this.cursor.setMonth(this.cursor.getMonth() - 1); this.render(); }
     next() { this.cursor.setMonth(this.cursor.getMonth() + 1); this.render(); }
 
-    // Dates that have a notice expiring that month
-    getNoticeDates() {
+    getNoticesByDate() {
         const notices = JSON.parse(localStorage.getItem('notices') || '[]');
-        const dates = new Set();
+        const map = {};
         notices.forEach(n => {
-            const d = new Date(n.expiry);
+            // Use Publish Date or fallback to created
+            const d = new Date(n.publishDate || n.created);
             if (d.getFullYear() === this.cursor.getFullYear() &&
                 d.getMonth()    === this.cursor.getMonth()) {
-                dates.add(d.getDate());
+                const day = d.getDate();
+                if (!map[day]) map[day] = [];
+                map[day].push(n);
             }
         });
-        return dates;
+        return map;
     }
 
     render() {
@@ -69,7 +84,7 @@ class Calendar {
 
         const year  = this.cursor.getFullYear();
         const month = this.cursor.getMonth();
-        const noticeDates = this.getNoticeDates();
+        const noticesByDate = this.getNoticesByDate();
 
         document.getElementById('calMonthYear').textContent = `${monthNames[month]} ${year}`;
 
@@ -78,19 +93,121 @@ class Calendar {
 
         let html = dayNames.map(d => `<div class="cal-day-name">${d}</div>`).join('');
 
-        // Empty cells before first day
         for (let i = 0; i < firstDay; i++) html += `<div class="cal-day empty"></div>`;
 
         for (let d = 1; d <= daysInMonth; d++) {
             const isToday = d === this.today.getDate() &&
                             month === this.today.getMonth() &&
                             year  === this.today.getFullYear();
-            const hasNotice = noticeDates.has(d);
-            const cls = ['cal-day', isToday ? 'today' : '', hasNotice ? 'has-notice' : ''].filter(Boolean).join(' ');
-            html += `<div class="${cls}" title="${hasNotice ? 'Notice expires this day' : ''}">${d}</div>`;
+            
+            const notices = noticesByDate[d] || [];
+            const priorities = { high: 0, medium: 0, low: 0 };
+            notices.forEach(n => priorities[n.priority]++);
+
+            const dotsHtml = Object.entries(priorities)
+                .filter(([_, count]) => count > 0)
+                .map(([p, _]) => `<span class="cal-dot ${p}"></span>`)
+                .join('');
+
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            const cls = ['cal-day', isToday ? 'today' : ''].filter(Boolean).join(' ');
+            
+            html += `
+                <div class="${cls}" onclick="calendar.handleDateClick(${d})" title="${notices.length} notices">
+                    ${d}
+                    <div class="cal-dots-container">${dotsHtml}</div>
+                </div>`;
         }
 
         document.getElementById('calGrid').innerHTML = html;
+    }
+
+    handleDateClick(day) {
+        const year = this.cursor.getFullYear();
+        const month = this.cursor.getMonth();
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        
+        const notices = (this.getNoticesByDate()[day] || []).sort((a, b) => {
+            const p = { high: 1, medium: 2, low: 3 };
+            return p[a.priority] - p[b.priority];
+        });
+
+        this.openModal(dateStr, notices);
+    }
+
+    openModal(dateStr, notices) {
+        const modal = document.getElementById('noticeModal');
+        const title = document.getElementById('modalDateTitle');
+        const content = document.getElementById('modalContent');
+        const footer = document.getElementById('modalFooter');
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        const isAdmin = user && user.role === 'admin';
+
+        const displayDate = new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+        title.textContent = `Notices for ${displayDate}`;
+        
+        if (notices.length === 0) {
+            content.innerHTML = `
+                <div class="empty-state" style="padding:20px 0;">
+                    <div class="empty-icon" style="font-size:2rem;">📅</div>
+                    <p>No notices scheduled for this date</p>
+                </div>`;
+        } else {
+            content.innerHTML = notices.map(n => `
+                <div class="modal-notice-item">
+                    <div class="modal-notice-title">${n.title}</div>
+                    <div class="notice-meta" style="margin-bottom:10px;">
+                        <span class="priority-badge ${n.priority}">${n.priority}</span>
+                        ${n.target && n.target !== 'all' ? `<span class="target-badge">🎯 ${n.target.toUpperCase()}</span>` : ''}
+                    </div>
+                    <div class="modal-notice-desc">${n.content}</div>
+                    <div class="notice-meta" style="font-size:0.75rem; color:#888;">
+                        <span>📅 Publish: ${new Date(n.publishDate || n.created).toLocaleString()}</span><br>
+                        <span>⌛ Expiry: ${new Date(n.expiry).toLocaleString()}</span>
+                    </div>
+                    ${isAdmin ? `
+                        <div style="margin-top:12px; display:flex; gap:8px;">
+                            <button class="btn-edit" onclick="noticeBoard.editNotice(${n.id}); calendar.closeModal()">Edit</button>
+                            <button class="delete-btn" onclick="noticeBoard.deleteNotice(${n.id}); calendar.closeModal()">Delete</button>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Footer buttons
+        let footerHtml = '';
+        if (isAdmin) {
+            footerHtml += `<button class="btn-save" onclick="calendar.addNoticeForDate('${dateStr}')">+ Add Notice</button>`;
+        }
+        footerHtml += `<button class="btn-save" style="background:#888;" onclick="calendar.closeModal()">Close</button>`;
+        footer.innerHTML = footerHtml;
+
+        modal.classList.add('active');
+    }
+
+    closeModal() {
+        const modal = document.getElementById('noticeModal');
+        if (modal) modal.classList.remove('active');
+    }
+
+    addNoticeForDate(dateStr) {
+        this.closeModal();
+        // Switch to Notices tab if needed (assuming we are already in Admin panel if we see this button)
+        if (typeof adminSwitchTab === 'function') adminSwitchTab('notices');
+        
+        // Pre-fill the form
+        const publishInput = document.getElementById('publishDate');
+        if (publishInput) {
+            // Set time to current time or start of day
+            const now = new Date();
+            const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            publishInput.value = `${dateStr}T${timeStr}`;
+        }
+        
+        // Scroll to form
+        const form = document.getElementById('noticeForm');
+        if (form) form.scrollIntoView({ behavior: 'smooth' });
     }
 }
 
@@ -148,6 +265,7 @@ class NoticeBoard {
         });
         this.renderNotices();
         this.startExpiryCheck();
+        this.checkServerStatus();
         renderUsersList();
     }
 
@@ -183,6 +301,7 @@ class NoticeBoard {
         document.getElementById('priority').value = n.priority;
         document.getElementById('expiry').value = n.expiry;
         if(document.getElementById('audience')) document.getElementById('audience').value = n.target || 'all';
+        if(document.getElementById('targetYear')) document.getElementById('targetYear').value = n.targetYear || 'all';
         if(document.getElementById('publishDate')) document.getElementById('publishDate').value = n.publishDate || '';
         if(document.getElementById('attachment')) document.getElementById('attachment').value = n.attachment || '';
         
@@ -200,11 +319,12 @@ class NoticeBoard {
         const expiry  = document.getElementById('expiry').value;
         const publishDate = document.getElementById('publishDate')?.value || null;
         const target      = document.getElementById('audience')?.value || 'all';
+        const targetYear  = document.getElementById('targetYear')?.value || 'all';
         const attachment  = document.getElementById('attachment')?.value || '';
         const editId      = document.getElementById('editNoticeId')?.value;
 
         const noticeData = {
-            title, content, priority, expiry, publishDate, target, attachment, status,
+            title, content, priority, expiry, publishDate, target, targetYear, attachment, status,
             created: new Date().toISOString(),
             author: this.currentUser.name,
             readBy: []
@@ -255,6 +375,26 @@ class NoticeBoard {
 
     isExpired(expiry) { return new Date(expiry) < new Date(); }
 
+    async checkServerStatus() {
+        const el = document.getElementById('emailServerStatus');
+        if (!el) return;
+
+        try {
+            // Check if server is running by fetching a static file or the root
+            const res = await fetch('http://localhost:3000/package.json', { method: 'HEAD' });
+            if (res.ok) {
+                el.className = 'server-status online';
+                el.querySelector('.status-text').textContent = 'Email Server Ready';
+            } else {
+                throw new Error();
+            }
+        } catch {
+            el.className = 'server-status offline';
+            el.querySelector('.status-text').textContent = 'Email Server Offline';
+            console.warn('Notification server (localhost:3000) is unreachable. Emails will not be sent.');
+        }
+    }
+
     validateNoticeForm() {
         const title   = document.getElementById('title').value;
         const content = document.getElementById('content').value;
@@ -300,11 +440,15 @@ class NoticeBoard {
             if (n.target && n.target !== 'all' && this.currentUser.department) {
                 if (this.currentUser.department !== 'general' && this.currentUser.department !== n.target) return false;
             }
+            if (n.targetYear && n.targetYear !== 'all' && this.currentUser.year) {
+                if (this.currentUser.year !== 'na' && this.currentUser.year !== n.targetYear) return false;
+            }
             return true;
         });
 
         const searchInput = document.getElementById('searchInput');
         const filterCat   = document.getElementById('filterCategory');
+        const filterYear  = document.getElementById('filterYear');
         const filterPri   = document.getElementById('filterPriority');
         
         if (searchInput && searchInput.value) {
@@ -313,6 +457,9 @@ class NoticeBoard {
         }
         if (filterCat && filterCat.value !== 'all') {
             active = active.filter(n => n.target === filterCat.value);
+        }
+        if (filterYear && filterYear.value !== 'all') {
+            active = active.filter(n => n.targetYear === filterYear.value);
         }
         if (filterPri && filterPri.value !== 'all') {
             active = active.filter(n => n.priority === filterPri.value);
@@ -371,6 +518,7 @@ class NoticeBoard {
                         <div class="notice-meta">
                             <span class="priority-badge ${n.priority}">${n.priority} Priority</span>
                             ${n.target && n.target !== 'all' ? `<span class="target-badge">🎯 ${n.target.toUpperCase()}</span>` : ''}
+                            ${n.targetYear && n.targetYear !== 'all' ? `<span class="target-badge">📅 Y${n.targetYear}</span>` : ''}
                             ${statusHtml}
                         </div>
                     </div>
@@ -409,28 +557,63 @@ class NoticeBoard {
 
     async sendEmailNotifications(notice) {
         const allUsers = JSON.parse(localStorage.getItem('users') || '[]');
-        // Filter out users who have explicitly opted out of email notifications
+        
+        // Filter users who should receive this notification
         const users = allUsers.filter(u => {
+            // Default to 'true' if preference is missing (opt-out model)
             const prefs = JSON.parse(localStorage.getItem(`prefs_${u.email}`) || '{}');
-            return prefs.email !== false;
+            if (prefs.email === false) return false;
+            
+            // Filter by department (target)
+            if (notice.target && notice.target !== 'all') {
+                if (u.department && u.department !== 'general' && u.department !== notice.target) return false;
+            }
+            
+            // Filter by year
+            if (notice.targetYear && notice.targetYear !== 'all') {
+                if (u.year && u.year !== 'na' && u.year !== notice.targetYear) return false;
+            }
+            
+            return true;
         });
+
+        if (users.length === 0) {
+            console.log('No eligible users to notify for this notice.');
+            return;
+        }
+
+        const toast = document.createElement('div');
+        toast.className = 'notification info show';
+        toast.textContent = `📧 Sending notifications to ${users.length} users...`;
+        document.body.appendChild(toast);
+
         try {
             const res = await fetch('http://localhost:3000/api/send-notification', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ users, notice })
             });
+
+            toast.remove(); // Remove the "sending" toast
+
             if (!res.ok) {
-                this.showToast('Notice posted. Email delivery failed.', 'warning');
+                const errData = await res.json().catch(() => ({}));
+                this.showToast(`Notice posted, but email server returned an error: ${errData.error || res.statusText}`, 'error');
                 return;
             }
+
             const result = await res.json();
             if (result.success) {
-                this.showToast('Notice posted. Email notifications dispatched.');
+                this.showToast(`Notice posted & emails sent to ${result.sent}/${result.total} users.`);
             } else {
-                this.showToast('Notice posted. Email delivery failed.', 'warning');
+                this.showToast(`Notice posted. Email service reported a problem: ${result.error}`, 'warning');
             }
-        } catch { /* server not running — notice already on board */ }
+        } catch (err) {
+            toast.remove();
+            console.error('Email Notification Error:', err);
+            this.showToast('Notice posted, but email server is OFFLINE. Please start server.js.', 'error');
+            this.checkServerStatus();
+        }
     }
 
     startExpiryCheck() {

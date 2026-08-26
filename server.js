@@ -9,6 +9,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
+app.get('/', (req, res) => {
+    res.send('Digital Notice Board Email Server is running.');
+});
+
+
 // ── Validate env vars on startup ──────────────────────────────────
 const GMAIL_USER = process.env.GMAIL_USER;
 const GMAIL_PASS = process.env.GMAIL_PASS;
@@ -201,14 +206,27 @@ app.post('/api/send-notification', async (req, res) => {
         res.json({ success: true, sent, total: users.length });
 
     } catch (error) {
-        console.error('Email error:', error.message);
-        res.status(500).json({ success: false, error: error.message });
+        console.error('Email API Error:', error.message);
+        res.status(500).json({ 
+            success: false, 
+            error: error.message,
+            tip: 'Check your .env credentials and internet connection.'
+        });
     }
 });
 
 // ── Start ─────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`\n✓ Server running → http://localhost:${PORT}`);
     console.log(`  Open: http://localhost:${PORT}/login.html\n`);
+}).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`\n✗ ERROR: Port ${PORT} is already in use.`);
+        console.error(`  → Another instance of the server is likely running.`);
+        console.error(`  → Close it or run 'npx kill-port ${PORT}' and try again.\n`);
+        process.exit(1);
+    } else {
+        console.error('Server error:', err);
+    }
 });

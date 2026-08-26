@@ -57,19 +57,6 @@
                         </h3>
                         <div class="controls-bar">
                             <input type="text" id="searchInput" class="search-input" placeholder="Search notices..." oninput="noticeBoard.renderNotices()">
-                            <select id="filterCategory" class="filter-select" onchange="noticeBoard.renderNotices()">
-                                <option value="all">All Departments</option>
-                                <option value="cs">Computer Science</option>
-                                <option value="it">Information Technology</option>
-                                <option value="mech">Mechanical</option>
-                                <option value="admin">Administration</option>
-                            </select>
-                            <select id="filterPriority" class="filter-select" onchange="noticeBoard.renderNotices()">
-                                <option value="all">All Priorities</option>
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                            </select>
                         </div>
                         <div id="noticeBoard"></div>
                     </div>
@@ -86,8 +73,10 @@
                         </div>
                         <div class="cal-grid" id="calGrid"></div>
                         <div class="cal-legend">
-                            <div class="cal-legend-dot"></div>
-                            <span>Notice expiry date</span>
+                            <div class="cal-legend-dot high"></div>
+                            <div class="cal-legend-dot medium"></div>
+                            <div class="cal-legend-dot low"></div>
+                            <span>Notice Priority Levels</span>
                         </div>
                     </div>
                 </div>
@@ -95,6 +84,22 @@
             </div>
 
         </main>
+    </div>
+
+    <!-- Notice Details Modal -->
+    <div class="modal-overlay" id="noticeModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="modalDateTitle">Notices</h2>
+                <button class="close-modal" onclick="calendar.closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <!-- Dynamic Content -->
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <button class="btn-save" style="background:#888;" onclick="calendar.closeModal()">Close</button>
+            </div>
+        </div>
     </div>
 
     <script src="portal.js"></script>

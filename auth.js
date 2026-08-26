@@ -26,8 +26,9 @@ class Auth {
         const name     = document.getElementById('name').value.trim();
         const email    = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
-        const role     = document.getElementById('role').value;
+        const role       = document.getElementById('role').value;
         const department = document.getElementById('department').value;
+        const year       = document.getElementById('year').value;
 
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         if (users.find(u => u.email === email)) {
@@ -35,7 +36,7 @@ class Auth {
             return;
         }
 
-        users.push({ name, email, password, role, department });
+        users.push({ name, email, password, role, department, year });
         localStorage.setItem('users', JSON.stringify(users));
         this.showMessage('message', 'Account created successfully. Redirecting to login...', 'success');
         setTimeout(() => window.location.href = 'login.html', 1500);
