@@ -23,7 +23,7 @@ To enable email notifications when admins post notices:
 2. **Install dependencies**: Run `npm install` in the project folder
 3. **Configure email**: Open `server.js` and update email credentials (see `SETUP-EMAIL.md` for detailed instructions)
 4. **Start server**: Run `npm start`
-5. **Access app**: Open http://localhost:3000/login.html
+5. **Access app**: Open https://digital-notice-board-eerb.onrender.com/login.html
 
 For detailed setup instructions, see `SETUP-EMAIL.md`
 
