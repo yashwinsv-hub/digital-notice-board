@@ -63,3 +63,11 @@ For detailed setup instructions, see `SETUP-EMAIL.md`
 - No dependencies required
 - Data stored in browser's localStorage
 - Expiry check runs every minute
+## Technologies Used
+
+- **Frontend:** HTML, CSS, JavaScript
+- **Backend:** Node.js, Express.js
+- **Database/Storage:** Local Storage
+- **Authentication:** Role-based authentication
+- **Deployment:** Render
+- **Version Control:** Git & GitHub
