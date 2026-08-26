@@ -88,3 +88,26 @@ digital-notice-board/
 ├── auth.css            # Authentication page styling
 ├── package.json        # Project dependencies
 └── README.md           # Project documentation
+## Application workflow
+
+User / Admin
+     ↓
+Registration / Login
+     ↓
+Authentication
+     ↓
+Role Identification
+     ↓
+ ┌───────────────┐
+ │               │
+ ▼               ▼
+Admin           User
+ │               │
+ ▼               ▼
+Create         View
+Manage         Notices
+Notices          │
+ │               │
+ └───────┬───────┘
+         ↓
+   Email Notification
