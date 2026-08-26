@@ -1,95 +1,106 @@
-# Digital Notice Board
+# 📢 Digital Notice Board
 
-A web application for managing notices with automatic expiry, priority management, and role-based access control.
+A full-stack web-based Digital Notice Board designed to replace traditional paper-based notice circulation with a centralized, responsive, and easy-to-manage online platform.
 
-## Features
+The system provides separate Admin and User roles, allowing administrators to create and manage notices while users can view active announcements.
 
-- User authentication (Login/Signup)
-- Role-based access control (Admin & User)
-- Admin Portal: Post and manage notices
-- User Portal: Read-only access to notices
-- Automatic expiry checking (removes expired notices)
-- Priority-based sorting (High → Medium → Low)
-- Local storage persistence
-- Responsive design
-- Color-coded priority system
+## 🚀 Live Demo
 
-## Setup
+[Visit Digital Notice Board](https://digital-notice-board-eerb.onrender.com)
 
-### Email Notifications Setup
-To enable email notifications when admins post notices:
+## 📂 GitHub Repository
 
-1. **Install Node.js** from [nodejs.org](https://nodejs.org/)
-2. **Install dependencies**: Run `npm install` in the project folder
-3. **Configure email**: Open `server.js` and update email credentials (see `SETUP-EMAIL.md` for detailed instructions)
-4. **Start server**: Run `npm start`
-5. **Access app**: Open https://digital-notice-board-eerb.onrender.com/login.html
+[View Source Code](https://github.com/yashwinsv-hub/digital-notice-board)
 
-For detailed setup instructions, see `SETUP-EMAIL.md`
+---
 
-### Usage
+## 📌 Project Overview
 
-1. Open `index.html` (or `login.html`) in a web browser
-2. Create an account by clicking "Sign Up"
-3. Choose your role:
-   - Admin: Can post and delete notices
-   - User: Can only view notices
-4. Login with your credentials
-5. Access your portal based on your role
-6. When admin posts a notice, all users receive email notifications
+The Digital Notice Board provides a centralized platform for publishing and accessing institutional announcements.
 
-## Portals
+Administrators can create, edit, manage, prioritize, and expire notices, while registered users can securely log in and view relevant announcements.
 
-### Admin Portal
-- Post new notices with title, content, priority, and expiry
-- View all active notices
+The application also supports email notifications for newly published notices.
+
+---
+
+## ✨ Features
+
+### 👨‍💼 Admin Features
+
+- Admin authentication
+- Create new notices
+- Edit existing notices
 - Delete notices
-- Full read/write access
+- Set notice priority
+- Set notice expiry dates
+- Manage published announcements
+- Send email notifications
 
-### User Portal
-- View all active notices
-- Read-only access
-- Cannot post or delete notices
+### 👨‍🎓 User Features
 
-## Priority Levels
+- User registration
+- User login
+- User dashboard
+- View active notices
+- Search notices
+- View notice priority
+- View notice expiry information
 
-- **High**: Red - Urgent notices
-- **Medium**: Orange - Standard notices
-- **Low**: Blue - Informational notices
+### 🔐 Security
 
-## Technical Details
+- Environment variables for sensitive credentials
+- Role-based access
+- Authentication for protected areas
+- `.env` excluded from GitHub using `.gitignore`
 
-- Pure HTML, CSS, and JavaScript
-- No dependencies required
-- Data stored in browser's localStorage
-- Expiry check runs every minute
-## Technologies Used
+### 📱 Responsive Design
 
-- **Frontend:** HTML, CSS, JavaScript
-- **Backend:** Node.js, Express.js
-- **Database/Storage:** Local Storage
-- **Authentication:** Role-based authentication
-- **Deployment:** Render
-- **Version Control:** Git & GitHub
-## Project Structure
+- Desktop-friendly interface
+- Mobile-friendly interface
+- Simple and accessible navigation
+
+---
+
+## 🛠️ Technologies Used
+
+| Category | Technologies |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Backend | Node.js, Express.js |
+| Authentication | Role-based authentication |
+| Email | Nodemailer / Gmail SMTP |
+| Version Control | Git, GitHub |
+| Deployment | Render |
+
+---
+
+## 📁 Project Structure
 
 ```text
 digital-notice-board/
-├── admin.html          # Admin dashboard
-├── user.html           # User notice board
-├── login.html          # Login page
-├── signup.html         # Registration page
-├── dashboard.js        # Dashboard functionality
-├── portal.js           # Portal functionality
-├── auth.js             # Authentication logic
-├── app.js              # Application logic
-├── server.js           # Node.js/Express server
-├── styles.css          # Main styling
-├── auth.css            # Authentication page styling
-├── package.json        # Project dependencies
-└── README.md           # Project documentation
+├── admin.html              # Admin dashboard
+├── user.html               # User notice board
+├── login.html              # Login page
+├── signup.html             # Registration page
+├── index.html              # Main application page
+├── dashboard.js            # Dashboard functionality
+├── portal.js               # Portal functionality
+├── auth.js                 # Authentication logic
+├── app.js                  # Application logic
+├── server.js               # Node.js / Express server
+├── styles.css              # Main styling
+├── auth.css                # Authentication page styling
+├── package.json            # Project dependencies
+├── package-lock.json       # Dependency lock file
+├── SETUP-EMAIL.md          # Email configuration guide
+├── .gitignore              # Git ignored files
+└── README.md               # Project documentation
+```
 
-##  Application Workflow
+---
+
+## 🔄 Application Workflow
 
 ```text
                     User / Admin
@@ -98,10 +109,10 @@ digital-notice-board/
                 Registration / Login
                          │
                          ▼
-                  Authentication
+                Authentication
                          │
                          ▼
-                  Role Verification
+                Role Verification
                     ┌────┴────┐
                     │         │
                   Admin      User
@@ -110,60 +121,169 @@ digital-notice-board/
              Admin Dashboard  User Dashboard
                     │         │
                     ▼         ▼
-             Create / Manage   View Active
-                 Notices        Notices
+             Create & Manage   View Active
+                  Notices        Notices
                     │             │
                     ▼             ▼
-             Set Priority     Search / View
+             Set Priority      Search / View
              & Expiry Date       Notices
                     │             │
                     └──────┬──────┘
                            ▼
-                  Published Notice
+                    Published Notice
                            │
                     ┌──────┴──────┐
                     ▼             ▼
-              Notice Visible   Email
-                to Users      Notification
-                    │             │
-                    └──────┬──────┘
-                           ▼
-                    Notice Expires
-                           │
-                           ▼
-                  Removed from Active
-                       Notices
-##  Key Highlights
+              Users View       Email
+                 Notice      Notification
+                    │
+                    ▼
+               Notice Expires
+                    │
+                    ▼
+             Removed from Active
+                  Notices
+```
+
+---
+
+## 🎯 Key Highlights
 
 - 📢 Centralized digital platform for managing institutional notices
-- 👨‍💼 Separate Admin and User roles with role-based access
+- 👨‍💼 Separate Admin and User roles
 - 📝 Admin can create, edit, delete, and manage notices
 - ⭐ Priority-based notice management
 - ⏳ Automatic notice expiry based on expiry dates
 - 🔍 Search functionality for quickly finding notices
-- 📧 Automated email notifications for newly published notices
+- 📧 Email notifications for newly published notices
 - 🔐 Environment-based configuration for sensitive credentials
 - 📱 Responsive interface for desktop and mobile devices
-- ☁️ Deployed and accessible through a public URL using Render
-- 🔗 GitHub-based version control and deployment workflow
+- ☁️ Deployed using Render
+- 🔗 GitHub-based version control
 
-##Future Enhancements
+---
+
+## ⚙️ Installation & Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/yashwinsv-hub/digital-notice-board.git
+cd digital-notice-board
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables
+
+Create a `.env` file in the project root:
+
+```env
+GMAIL_USER=your-email@gmail.com
+GMAIL_APP_PASSWORD=your-gmail-app-password
+```
+
+> ⚠️ Never commit your `.env` file or Gmail App Password to GitHub.
+
+### 4. Start the application
+
+```bash
+node server.js
+```
+
+### 5. Open the application
+
+```text
+http://localhost:3000
+```
+
+---
+
+## 📧 Email Notifications
+
+The application uses Gmail SMTP through Nodemailer to send notification emails when new notices are published.
+
+Sensitive Gmail credentials are stored using environment variables rather than being hard-coded into the source code.
+
+Example:
+
+```env
+GMAIL_USER=your-email@gmail.com
+GMAIL_APP_PASSWORD=your-gmail-app-password
+```
+
+For production deployment, these variables should be configured securely through the hosting platform.
+
+---
+
+## 🌐 Deployment
+
+The application is deployed using Render.
+
+### Deployment Flow
+
+```text
+GitHub Repository
+       ↓
+     Render
+       ↓
+Node.js + Express Server
+       ↓
+Public Web Application
+```
+
+### Live Application
+
+[https://digital-notice-board-eerb.onrender.com](https://digital-notice-board-eerb.onrender.com)
+
+---
+
+## 📸 Screenshots
+
+### Login Page
+
+_Add your login screenshot here._
+
+### User Dashboard
+
+_Add your user dashboard screenshot here._
+
+### Admin Dashboard
+
+_Add your admin dashboard screenshot here._
+
+---
+
+## 🔮 Future Enhancements
 
 - 🗄️ Integrate MongoDB for scalable and persistent data storage
 - 🔐 Implement JWT-based authentication and secure password hashing
 - 📊 Add an analytics dashboard for notice views and user activity
-- 🔔 Introduce browser push notifications for important announcements
+- 🔔 Introduce browser push notifications
 - 📎 Support file and image attachments in notices
 - 🔎 Add advanced filtering by category, priority, and date
 - 👥 Implement more granular role-based permissions
-- 📱 Develop a dedicated mobile application
 - 🧪 Add automated unit and integration testing
 - ⚙️ Implement CI/CD using GitHub Actions
-- 📈 Add monitoring and application performance tracking
+- 📈 Add application monitoring and performance tracking
+
+---
 
 ## 👨‍💻 Author
 
-**Yashwin Sannidhi**  
-B.Tech – Computer Science Engineering (Artificial Intelligence & Machine Learning)
+**Yashwin Sannidhi**
 
-[GitHub](https://github.com/yashwinsv-hub)
+B.Tech – Computer Science Engineering  
+**Artificial Intelligence & Machine Learning**
+
+[GitHub Profile](https://github.com/yashwinsv-hub)
+
+---
+
+## 📄 License
+
+This project is developed for educational and portfolio purposes.
