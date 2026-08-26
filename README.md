@@ -242,22 +242,6 @@ Public Web Application
 
 ---
 
-## 📸 Screenshots
-
-### Login Page
-
-_Add your login screenshot here._
-
-### User Dashboard
-
-_Add your user dashboard screenshot here._
-
-### Admin Dashboard
-
-_Add your admin dashboard screenshot here._
-
----
-
 ## 🔮 Future Enhancements
 
 - 🗄️ Integrate MongoDB for scalable and persistent data storage
