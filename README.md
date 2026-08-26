@@ -88,26 +88,82 @@ digital-notice-board/
 ├── auth.css            # Authentication page styling
 ├── package.json        # Project dependencies
 └── README.md           # Project documentation
-## Application workflow
 
-User / Admin
-     ↓
-Registration / Login
-     ↓
-Authentication
-     ↓
-Role Identification
-     ↓
- ┌───────────────┐
- │               │
- ▼               ▼
-Admin           User
- │               │
- ▼               ▼
-Create         View
-Manage         Notices
-Notices          │
- │               │
- └───────┬───────┘
-         ↓
-   Email Notification
+##  Application Workflow
+
+```text
+                    User / Admin
+                         │
+                         ▼
+                Registration / Login
+                         │
+                         ▼
+                  Authentication
+                         │
+                         ▼
+                  Role Verification
+                    ┌────┴────┐
+                    │         │
+                  Admin      User
+                    │         │
+                    ▼         ▼
+             Admin Dashboard  User Dashboard
+                    │         │
+                    ▼         ▼
+             Create / Manage   View Active
+                 Notices        Notices
+                    │             │
+                    ▼             ▼
+             Set Priority     Search / View
+             & Expiry Date       Notices
+                    │             │
+                    └──────┬──────┘
+                           ▼
+                  Published Notice
+                           │
+                    ┌──────┴──────┐
+                    ▼             ▼
+              Notice Visible   Email
+                to Users      Notification
+                    │             │
+                    └──────┬──────┘
+                           ▼
+                    Notice Expires
+                           │
+                           ▼
+                  Removed from Active
+                       Notices
+##  Key Highlights
+
+- 📢 Centralized digital platform for managing institutional notices
+- 👨‍💼 Separate Admin and User roles with role-based access
+- 📝 Admin can create, edit, delete, and manage notices
+- ⭐ Priority-based notice management
+- ⏳ Automatic notice expiry based on expiry dates
+- 🔍 Search functionality for quickly finding notices
+- 📧 Automated email notifications for newly published notices
+- 🔐 Environment-based configuration for sensitive credentials
+- 📱 Responsive interface for desktop and mobile devices
+- ☁️ Deployed and accessible through a public URL using Render
+- 🔗 GitHub-based version control and deployment workflow
+
+##Future Enhancements
+
+- 🗄️ Integrate MongoDB for scalable and persistent data storage
+- 🔐 Implement JWT-based authentication and secure password hashing
+- 📊 Add an analytics dashboard for notice views and user activity
+- 🔔 Introduce browser push notifications for important announcements
+- 📎 Support file and image attachments in notices
+- 🔎 Add advanced filtering by category, priority, and date
+- 👥 Implement more granular role-based permissions
+- 📱 Develop a dedicated mobile application
+- 🧪 Add automated unit and integration testing
+- ⚙️ Implement CI/CD using GitHub Actions
+- 📈 Add monitoring and application performance tracking
+
+## 👨‍💻 Author
+
+**Yashwin Sannidhi**  
+B.Tech – Computer Science Engineering (Artificial Intelligence & Machine Learning)
+
+[GitHub](https://github.com/yashwinsv-hub)
