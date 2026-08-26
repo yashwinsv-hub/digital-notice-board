@@ -71,3 +71,19 @@ For detailed setup instructions, see `SETUP-EMAIL.md`
 - **Authentication:** Role-based authentication
 - **Deployment:** Render
 - **Version Control:** Git & GitHub
+## Project Structure
+
+digital-notice-board/
+├── admin.html          # Admin dashboard
+├── user.html           # User notice board
+├── login.html          # Login page
+├── signup.html         # Registration page
+├── dashboard.js        # Dashboard functionality
+├── portal.js           # Portal functionality
+├── auth.js             # Authentication logic
+├── app.js              # Application logic
+├── server.js           # Node.js/Express server
+├── styles.css          # Main styling
+├── auth.css            # Authentication page styling
+├── package.json        # Project dependencies
+└── README.md           # Project documentation
