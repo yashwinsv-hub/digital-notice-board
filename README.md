@@ -151,8 +151,39 @@ Do **not** put another ` ```text ` inside a ` ```markdown ` block. That's what c
              Removed from Active
                   Notices
 ```
+## 👥 User Roles
 
+### 👨‍💼 Administrator
+The administrator has full control over the notice board and can:
+- Create notices
+- Edit notices
+- Delete notices
+- Set notice priority
+- Set expiry dates
+- Manage announcements
+- Trigger email notifications
+
+### 👤 User
+Users can:
+- Register and log in
+- Access the digital notice board
+- View active announcements
+- Identify high-priority notices
+- Receive important notifications
 ---
+## 🗄️ Database
+
+The application uses **MySQL** to store and manage application data.
+
+The database is responsible for storing:
+- User account information
+- Authentication-related data
+- Notice details
+- Notice priority
+- Notice creation and expiry dates
+- Other application records
+
+The Node.js backend communicates with MySQL using the `mysql2` package.
 
 ## 🎯 Key Highlights
 
