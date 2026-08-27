@@ -258,25 +258,39 @@ For production deployment, these variables should be configured securely through
 
 ---
 
+## 🚀 Live Demo
+
+The Digital Notice Board is deployed and accessible online.
+
+🔗 **Live Application:**  
+https://digital-notice-board-eerb.onrender.com
+
+🔗 **GitHub Repository:**  
+https://github.com/yashwinsv-hub/digital-notice-board
+
+---
+
 ## 🌐 Deployment
 
-The application is deployed using Render.
+The application is deployed using **Render** and the source code is maintained on **GitHub**.
 
-### Deployment Flow
+### Deployment Workflow
 
 ```text
+Developer
+    │
+    ▼
 GitHub Repository
-       ↓
-     Render
-       ↓
-Node.js + Express Server
-       ↓
-Public Web Application
-```
-
-### Live Application
-
-[https://digital-notice-board-eerb.onrender.com](https://digital-notice-board-eerb.onrender.com)
+    │
+    ▼
+Render
+    │
+    ├── Install Dependencies
+    ├── Configure Environment Variables
+    └── Start Node.js Server
+    │
+    ▼
+Live Web Application
 
 ---
 
