@@ -152,11 +152,6 @@ Do **not** put another ` ```text ` inside a ` ```markdown ` block. That's what c
                   Notices
 ```
 
-This will make your project workflow **very easy for a recruiter or evaluator to understand**.
-
-Save/commit the changes.
-
-Then tell me **`done`** and we'll add **User Roles + Database + Email Notifications**.
 ---
 
 ## 🎯 Key Highlights
