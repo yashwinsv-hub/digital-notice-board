@@ -99,6 +99,11 @@ digital-notice-board/
 ├── .gitignore              # Git ignored files
 └── README.md               # Project documentation
 ```
+### ⚠️ Important
+
+Notice that there is **only one set of triple backticks around the project structure**.
+
+Do **not** put another ` ```text ` inside a ` ```markdown ` block. That's what caused the formatting problem you showed me earlier.
 
 ---
 
@@ -147,6 +152,11 @@ digital-notice-board/
                   Notices
 ```
 
+This will make your project workflow **very easy for a recruiter or evaluator to understand**.
+
+Save/commit the changes.
+
+Then tell me **`done`** and we'll add **User Roles + Database + Email Notifications**.
 ---
 
 ## 🎯 Key Highlights
