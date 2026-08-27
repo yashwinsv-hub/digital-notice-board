@@ -274,8 +274,6 @@ https://github.com/yashwinsv-hub/digital-notice-board
 
 The application is deployed using **Render** and the source code is maintained on **GitHub**.
 
-### Deployment Workflow
-
 ```text
 Developer
     │
@@ -291,7 +289,7 @@ Render
     │
     ▼
 Live Web Application
-
+```
 ---
 
 ## 🔮 Future Enhancements
