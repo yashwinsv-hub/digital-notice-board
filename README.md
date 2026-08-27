@@ -60,14 +60,18 @@ The application also supports email notifications for newly published notices.
 
 ## 🛠️ Technologies Used
 
-| Category | Technologies |
-|---|---|
-| Frontend | HTML, CSS, JavaScript |
-| Backend | Node.js, Express.js |
-| Authentication | Role-based authentication |
-| Email | Nodemailer / Gmail SMTP |
-| Version Control | Git, GitHub |
-| Deployment | Render |
+| Technology | Purpose |
+|------------|---------|
+| HTML5 | Structure of web pages |
+| CSS3 | Styling and responsive design |
+| JavaScript | Frontend functionality |
+| Node.js | Backend runtime environment |
+| Express.js | Server-side application framework |
+| MySQL | Database management |
+| Nodemailer | Email notification system |
+| dotenv | Environment variable management |
+| Jest | Application testing |
+| Nodemon | Development server |
 
 ---
 
