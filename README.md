@@ -20,28 +20,30 @@ The application also supports email notifications for newly published notices.
 
 ---
 
-## ✨ Features
+## ⚙️ Features
+
+### 👤 User Features
+- User registration and login
+- Secure authentication
+- View active notices
+- View notices based on priority
+- Receive important announcements
 
 ### 👨‍💼 Admin Features
-
 - Admin authentication
 - Create new notices
 - Edit existing notices
 - Delete notices
 - Set notice priority
-- Set notice expiry dates
-- Manage published announcements
+- Set notice expiry date
+- Manage announcements
 - Send email notifications
 
-### 👨‍🎓 User Features
-
-- User registration
-- User login
-- User dashboard
-- View active notices
-- Search notices
-- View notice priority
-- View notice expiry information
+### 🔔 Notice Management
+- Priority-based announcements
+- Automatic expiry of outdated notices
+- Centralized notice management
+- Real-time-style updates through the web application
 
 ### 🔐 Security
 
